@@ -22,15 +22,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
   app.get('/filteredimage', async (req: Request, res: Response) => {
     const { image_url } = req.query;
-    //  validate the image_url query
     if (typeof image_url !== 'string') res.status(400).send('valid image_url is required');
-
-    // TODO call filterImageFromURL(image_url) to filter the image
-    // TODO send the resulting file in the response
-    // TODO deletes any files on the server on finish of the response
     
-    res.send(`you sent ${image_url}`);
-  })
+    let filteredImage = '';
+    filteredImage = await filterImageFromURL(image_url);
+
+    res.sendFile(filteredImage, () => {
+      deleteLocalFiles([filteredImage]);
+    });
+
+  });
   // endpoint to filter an image from a public url.
 
   /**************************************************************************** */
