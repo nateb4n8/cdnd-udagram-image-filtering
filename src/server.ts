@@ -25,7 +25,11 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     if (typeof image_url !== 'string') res.status(400).send('valid image_url is required');
     
     let filteredImage = '';
-    filteredImage = await filterImageFromURL(image_url);
+    try {
+      filteredImage = await filterImageFromURL(image_url);
+    } catch {
+      return res.status(422).send('Unable to filter image, ensure an image URL was provided');
+    }
 
     res.sendFile(filteredImage, () => {
       deleteLocalFiles([filteredImage]);
