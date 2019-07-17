@@ -21,7 +21,7 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
                 resolve(__dirname+outpath);
             });
         } catch (err) {
-            console.error('Unable to process image from URL');
+            console.error('Unable to process image from URL', err);
             reject(err);
         }
     });
